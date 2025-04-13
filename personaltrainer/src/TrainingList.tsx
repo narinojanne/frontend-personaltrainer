@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { Training } from "./Types";
-import { DataGrid, GridColDef } from "@mui/x-data-grid";
+import { DataGrid, GridColDef, GridValueGetter } from "@mui/x-data-grid";
 import { Paper } from "@mui/material";
+import dayjs from "dayjs";
 
 const BASE_URL =
   "https://customer-rest-service-frontend-personaltrainer.2.rahtiapp.fi/api";
@@ -17,14 +18,22 @@ export default function TrainingList() {
       field: "date",
       headerName: "Date",
       width: 200,
+      valueFormatter: (value: string) => {
+        return dayjs(value).format("DD:MM:YYYY HH:mm");
+      },
     },
     { field: "activity", headerName: "Activity", width: 130 },
     {
       field: "duration",
       headerName: "Duration (mins)",
+      align: "center",
       width: 130,
     },
-    { field: "lastname", headerName: "Last name", width: 130 },
+    {
+      field: "lastname",
+      headerName: "Last name",
+      width: 130,
+    },
   ];
 
   // Initializing data grid pagesize (10 rows in a page)
