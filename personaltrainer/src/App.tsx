@@ -1,8 +1,6 @@
 import { AppBar, Box, Container, Toolbar, Typography } from "@mui/material";
 import "./App.css";
 import AppTabs from "./AppTabs";
-import AppLinks from "./AppLinks";
-import { Outlet } from "react-router";
 
 function App() {
   return (
