@@ -2,8 +2,8 @@ import { Box, Tab } from "@mui/material";
 import { useState } from "react";
 import { TabContext, TabList, TabPanel } from "@mui/lab";
 import Home from "./Home";
-import TrainingList from "./TrainingList";
-import CustomerList from "./CustomerList";
+import CustomerListAgGrid from "./CustomerListAgGrid";
+import TrainingListAgGrid from "./TrainingListAgGrid";
 
 export default function AppTabs() {
   const [value, setValue] = useState("1");
@@ -30,10 +30,10 @@ export default function AppTabs() {
           <Home />
         </TabPanel>
         <TabPanel value="2">
-          <CustomerList />
+          <CustomerListAgGrid />
         </TabPanel>
         <TabPanel value="3">
-          <TrainingList />
+          <TrainingListAgGrid />
         </TabPanel>
       </TabContext>
     </Box>
