@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState, useRef } from "react";
-import { Customer } from "./Types";
+import { Customer, NewCustomer } from "./Types";
 
 import { AgGridReact } from "ag-grid-react";
 import { AgGridReact as AgGridReactType } from "ag-grid-react/";
@@ -7,6 +7,7 @@ import "ag-grid-community/styles/ag-theme-quartz.css";
 import { ColDef, ICellRendererParams } from "ag-grid-community";
 import { AllCommunityModule, ModuleRegistry } from "ag-grid-community";
 import Button from "@mui/material/Button";
+import AddCustomer from "./AddCustomer";
 ModuleRegistry.registerModules([AllCommunityModule]);
 
 // Setting base url
@@ -119,6 +120,21 @@ export default function CustomerListAgGrid() {
     }
   };
 
+  // Function to add new customer
+  const addCustomer = (customer: NewCustomer) => {
+    const options = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(customer),
+    };
+
+    fetch(`${BASE_URL}/customers`, options)
+      .then(() => fetchCustomers())
+      .catch((err) => console.error(err));
+  };
+
   if (loading) {
     return <div>Loading...</div>;
   }
@@ -135,6 +151,7 @@ export default function CustomerListAgGrid() {
         height: "65vh",
         margin: "auto",
       }}>
+      <AddCustomer addCustomer={addCustomer} />
       <AgGridReact
         ref={gridRef}
         defaultColDef={defaultColDef}
