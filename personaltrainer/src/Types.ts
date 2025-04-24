@@ -32,6 +32,22 @@ export type Training = {
   customer?: Customer;
 };
 
+export type NewTraining = {
+  date: string;
+  activity: string;
+  duration: string;
+  customer: string;
+};
+
 export type AddCustomerProps = {
   addCustomer: (customer: NewCustomer) => void;
+};
+
+export type AddTrainingProps = {
+  addTraining: (training: NewTraining) => void;
+};
+
+export type EditCustomerProps = {
+  currentCustomer: Customer;
+  editCustomer: (customer: Customer, url: string) => void;
 };

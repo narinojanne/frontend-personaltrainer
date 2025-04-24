@@ -8,6 +8,7 @@ import { ColDef, ICellRendererParams } from "ag-grid-community";
 import { AllCommunityModule, ModuleRegistry } from "ag-grid-community";
 import Button from "@mui/material/Button";
 import AddCustomer from "./AddCustomer";
+import EditCustomer from "./EditCustomer";
 ModuleRegistry.registerModules([AllCommunityModule]);
 
 // Setting base url
@@ -39,9 +40,22 @@ export default function CustomerListAgGrid() {
     { field: "id", flex: 0.5 },
     { field: "firstname", cellStyle: { textAlign: "start" } },
     { field: "lastname", cellStyle: { textAlign: "start" } },
-    { field: "city", cellStyle: { textAlign: "start" } },
-    { field: "phone", cellStyle: { textAlign: "start" } },
+    { field: "city", cellStyle: { textAlign: "start" }, flex: 0.8 },
+    { field: "phone", cellStyle: { textAlign: "start" }, flex: 0.8 },
     { field: "email", cellStyle: { textAlign: "start" } },
+    {
+      sortable: false,
+      filter: false,
+      flex: 0.5,
+      field: "_links.self.href",
+      headerName: "",
+      cellRenderer: (params: ICellRendererParams<Customer>) => (
+        <EditCustomer
+          currentCustomer={params.data as Customer}
+          editCustomer={editCustomer}
+        />
+      ),
+    },
     {
       sortable: false,
       filter: false,
@@ -135,6 +149,21 @@ export default function CustomerListAgGrid() {
       .catch((err) => console.error(err));
   };
 
+  // Function to update customer
+  const editCustomer = (customer: Customer, url: string) => {
+    const options = {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(customer),
+    };
+
+    fetch(url, options)
+      .then(() => fetchCustomers())
+      .catch((err) => console.error(err));
+  };
+
   if (loading) {
     return <div>Loading...</div>;
   }
@@ -157,10 +186,11 @@ export default function CustomerListAgGrid() {
         defaultColDef={defaultColDef}
         rowData={customers}
         columnDefs={columnDefs}
+        domLayout="autoHeight"
         getRowId={(params) => params.data.id.toString()}
         pagination={true}
         paginationPageSizeSelector={[5, 10, 15, 20, 50, 100]}
-        paginationPageSize={20}
+        paginationPageSize={15}
       />
     </div>
   );

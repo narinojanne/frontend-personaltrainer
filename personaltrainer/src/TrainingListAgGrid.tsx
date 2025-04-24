@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState, useRef } from "react";
-import { Training } from "./Types";
+import { Training, NewTraining } from "./Types";
 
 import { AgGridReact } from "ag-grid-react";
 import { AgGridReact as AgGridReactType } from "ag-grid-react/";
@@ -8,6 +8,7 @@ import { ColDef, ICellRendererParams } from "ag-grid-community";
 import { AllCommunityModule, ModuleRegistry } from "ag-grid-community";
 import dayjs from "dayjs";
 import Button from "@mui/material/Button";
+import AddTraining from "./AddTraining";
 ModuleRegistry.registerModules([AllCommunityModule]);
 
 // Setting base url
@@ -36,7 +37,7 @@ export default function TrainingListAgGrid() {
 
   // Initializing columns
   const [columnDefs] = useState<ColDef<Training>[]>([
-    { field: "id" },
+    { field: "id", flex: 0.5 },
     {
       field: "date",
       cellStyle: { textAlign: "start" },
@@ -50,6 +51,7 @@ export default function TrainingListAgGrid() {
     },
     {
       field: "duration",
+      flex: 0.5,
     },
     {
       field: "customer.lastname",
@@ -124,6 +126,21 @@ export default function TrainingListAgGrid() {
     }
   };
 
+  // Function to add new training
+  const addTraining = (training: NewTraining) => {
+    const options = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(training),
+    };
+
+    fetch(`${BASE_URL}/trainings`, options)
+      .then(() => fetchTrainings())
+      .catch((err) => console.error(err));
+  };
+
   if (loading) {
     return <div>Loading...</div>;
   }
@@ -140,15 +157,17 @@ export default function TrainingListAgGrid() {
         height: "65vh",
         margin: "auto",
       }}>
+      <AddTraining addTraining={addTraining} />
       <AgGridReact
         ref={gridRef}
         defaultColDef={defaultColDef}
         rowData={trainings}
         columnDefs={columnDefs}
+        domLayout="autoHeight"
         getRowId={(params) => params.data.id.toString()}
         pagination={true}
         paginationPageSizeSelector={[5, 10, 15, 20, 50, 100]}
-        paginationPageSize={20}
+        paginationPageSize={15}
       />
     </div>
   );
