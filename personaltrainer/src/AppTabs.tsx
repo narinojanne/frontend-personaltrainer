@@ -26,14 +26,20 @@ export default function AppTabs() {
             <Tab label="Trainings" value="3" />
           </TabList>
         </Box>
-        <TabPanel value="1">
-          <Home />
+        <TabPanel value="1" sx={{ p: 0 }}>
+          <Box sx={{ height: "80vh", width: "100%" }}>
+            <Home />
+          </Box>
         </TabPanel>
-        <TabPanel value="2">
-          <CustomerListAgGrid />
+        <TabPanel value="2" sx={{ p: 0 }}>
+          <Box sx={{ height: "80vh", width: "100%" }}>
+            <CustomerListAgGrid />
+          </Box>
         </TabPanel>
-        <TabPanel value="3">
-          <TrainingListAgGrid />
+        <TabPanel value="3" sx={{ p: 0 }}>
+          <Box sx={{ height: "80vh", width: "100%" }}>
+            <TrainingListAgGrid />
+          </Box>
         </TabPanel>
       </TabContext>
     </Box>
