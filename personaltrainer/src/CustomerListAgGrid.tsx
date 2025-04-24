@@ -1,7 +1,8 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, useRef } from "react";
 import { Customer } from "./Types";
 
 import { AgGridReact } from "ag-grid-react";
+import { AgGridReact as AgGridReactType } from "ag-grid-react/";
 import "ag-grid-community/styles/ag-theme-quartz.css";
 import { ColDef, ICellRendererParams } from "ag-grid-community";
 import { AllCommunityModule, ModuleRegistry } from "ag-grid-community";
@@ -17,6 +18,7 @@ export default function CustomerListAgGrid() {
   const [customers, setCustomers] = useState<Customer[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const gridRef = useRef<AgGridReactType<Customer>>(null);
 
   // Set some default rules to columns
   const defaultColDef = useMemo(() => {
@@ -33,7 +35,7 @@ export default function CustomerListAgGrid() {
 
   // Initializing columns
   const [columnDefs] = useState<ColDef<Customer>[]>([
-    { field: "id" },
+    { field: "id", flex: 0.5 },
     { field: "firstname", cellStyle: { textAlign: "start" } },
     { field: "lastname", cellStyle: { textAlign: "start" } },
     { field: "city", cellStyle: { textAlign: "start" } },
@@ -49,7 +51,12 @@ export default function CustomerListAgGrid() {
         <Button
           color="secondary"
           size="small"
-          onClick={() => handleDelete(params.value)}>
+          onClick={() =>
+            handleDelete(
+              params.data._links.self.href,
+              params.data.id.toString()
+            )
+          }>
           DELETE
         </Button>
       ),
@@ -57,7 +64,6 @@ export default function CustomerListAgGrid() {
   ]);
 
   // Get customer data and add customer id to data
-
   const fetchCustomers = async () => {
     try {
       const response = await fetch(`${BASE_URL}/customers`);
@@ -86,20 +92,31 @@ export default function CustomerListAgGrid() {
     fetchCustomers();
   }, []);
 
-  const handleDelete = (url: string) => {
-    if (window.confirm("Are you sure you want to delete car?")) {
-      deleteCustomer(url);
+  // Confirm delete
+  const handleDelete = (url: string, id: string) => {
+    if (window.confirm("Are you sure you want to delete customer?")) {
+      deleteCustomer(url, id);
     }
   };
 
-  const deleteCustomer = (url: string) => {
-    const options = {
-      method: "DELETE",
-    };
+  // Function to delete customer
+  const deleteCustomer = async (url: string, id: string) => {
+    try {
+      const response = await fetch(url, {
+        method: "DELETE",
+      });
 
-    fetch(url, options)
-      .then(() => fetchCustomers())
-      .catch((err) => console.error(err));
+      if (!response.ok) throw new Error("Delete failed");
+
+      const api = gridRef.current?.api;
+      const rowNodeToRemove = api?.getRowNode(id.toString());
+
+      if (api && rowNodeToRemove && rowNodeToRemove.data) {
+        api.applyTransaction({ remove: [rowNodeToRemove.data] });
+      }
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   if (loading) {
@@ -119,9 +136,11 @@ export default function CustomerListAgGrid() {
         margin: "auto",
       }}>
       <AgGridReact
+        ref={gridRef}
         defaultColDef={defaultColDef}
         rowData={customers}
         columnDefs={columnDefs}
+        getRowId={(params) => params.data.id.toString()}
         pagination={true}
         paginationPageSizeSelector={[5, 10, 15, 20, 50, 100]}
         paginationPageSize={20}
