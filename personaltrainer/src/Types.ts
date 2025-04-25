@@ -45,6 +45,12 @@ export type AddCustomerProps = {
 
 export type AddTrainingProps = {
   addTraining: (training: NewTraining) => void;
+  currentCustomer: Customer;
+};
+
+export type AddTrainingCustomerProps = {
+  addTraining: (training: NewTraining) => void;
+  customerUrl: string;
 };
 
 export type EditCustomerProps = {

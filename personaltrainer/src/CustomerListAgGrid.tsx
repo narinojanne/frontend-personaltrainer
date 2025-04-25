@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState, useRef } from "react";
-import { Customer, NewCustomer } from "./Types";
+import { Customer, NewCustomer, NewTraining } from "./Types";
 
 import { AgGridReact } from "ag-grid-react";
 import { AgGridReact as AgGridReactType } from "ag-grid-react/";
@@ -9,6 +9,7 @@ import { AllCommunityModule, ModuleRegistry } from "ag-grid-community";
 import Button from "@mui/material/Button";
 import AddCustomer from "./AddCustomer";
 import EditCustomer from "./EditCustomer";
+import AddTraining from "./AddTraining";
 ModuleRegistry.registerModules([AllCommunityModule]);
 
 // Setting base url
@@ -43,6 +44,17 @@ export default function CustomerListAgGrid() {
     { field: "city", cellStyle: { textAlign: "start" }, flex: 0.8 },
     { field: "phone", cellStyle: { textAlign: "start" }, flex: 0.8 },
     { field: "email", cellStyle: { textAlign: "start" } },
+    {
+      sortable: false,
+      filter: false,
+      headerName: "",
+      cellRenderer: (params: ICellRendererParams<Customer>) => (
+        <AddTraining
+          currentCustomer={params.data as Customer}
+          addTraining={addTraining}
+        />
+      ),
+    },
     {
       sortable: false,
       filter: false,
@@ -160,6 +172,21 @@ export default function CustomerListAgGrid() {
     };
 
     fetch(url, options)
+      .then(() => fetchCustomers())
+      .catch((err) => console.error(err));
+  };
+
+  // Function to add new training
+  const addTraining = (training: NewTraining) => {
+    const options = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(training),
+    };
+
+    fetch(`${BASE_URL}/trainings`, options)
       .then(() => fetchCustomers())
       .catch((err) => console.error(err));
   };

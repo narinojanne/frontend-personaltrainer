@@ -15,7 +15,7 @@ function App() {
           </Typography>
         </Toolbar>
       </AppBar>
-      <Container>
+      <Container maxWidth="lg">
         <Box sx={{ flexGrow: 1 }}></Box>
         <AppTabs />
       </Container>
