@@ -8,6 +8,7 @@ import { ColDef, ICellRendererParams } from "ag-grid-community";
 import { AllCommunityModule, ModuleRegistry } from "ag-grid-community";
 import dayjs from "dayjs";
 import Button from "@mui/material/Button";
+import { Container } from "@mui/material";
 ModuleRegistry.registerModules([AllCommunityModule]);
 
 // Setting base url
@@ -36,7 +37,7 @@ export default function TrainingListAgGrid() {
 
   // Initializing columns
   const [columnDefs] = useState<ColDef<Training>[]>([
-    { field: "id", flex: 0.5 },
+    { field: "id", flex: 0.3 },
     {
       field: "date",
       cellStyle: { textAlign: "start" },
@@ -50,7 +51,7 @@ export default function TrainingListAgGrid() {
     },
     {
       field: "duration",
-      flex: 0.5,
+      flex: 0.4,
     },
     {
       field: "customer.lastname",
@@ -135,11 +136,12 @@ export default function TrainingListAgGrid() {
 
   // Display data
   return (
-    <div
+    <Container
       style={{
         maxWidth: "100%",
         height: "65vh",
         margin: "auto",
+        padding: 0,
       }}>
       {/* <AddTraining addTraining={addTraining} /> */}
       <AgGridReact
@@ -153,6 +155,6 @@ export default function TrainingListAgGrid() {
         paginationPageSizeSelector={[5, 10, 15, 20, 50, 100]}
         paginationPageSize={15}
       />
-    </div>
+    </Container>
   );
 }

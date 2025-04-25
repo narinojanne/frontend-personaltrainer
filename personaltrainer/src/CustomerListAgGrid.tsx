@@ -1,16 +1,22 @@
-import { useEffect, useMemo, useState, useRef } from "react";
+import { useEffect, useMemo, useState, useRef, useCallback } from "react";
 import { Customer, NewCustomer, NewTraining } from "./Types";
 
 import { AgGridReact } from "ag-grid-react";
 import { AgGridReact as AgGridReactType } from "ag-grid-react/";
 import "ag-grid-community/styles/ag-theme-quartz.css";
-import { ColDef, ICellRendererParams } from "ag-grid-community";
-import { AllCommunityModule, ModuleRegistry } from "ag-grid-community";
+import {
+  AllCommunityModule,
+  ModuleRegistry,
+  ColDef,
+  ICellRendererParams,
+  CsvExportModule,
+} from "ag-grid-community";
 import Button from "@mui/material/Button";
 import AddCustomer from "./AddCustomer";
 import EditCustomer from "./EditCustomer";
 import AddTraining from "./AddTraining";
-ModuleRegistry.registerModules([AllCommunityModule]);
+import { Container, Stack } from "@mui/material";
+ModuleRegistry.registerModules([AllCommunityModule, CsvExportModule]);
 
 // Setting base url
 const BASE_URL =
@@ -191,6 +197,14 @@ export default function CustomerListAgGrid() {
       .catch((err) => console.error(err));
   };
 
+  // Function to export customer data to CSV
+  const onBtnExport = useCallback(() => {
+    const params = {
+      columnKeys: ["id", "firstname", "lastname", "city", "phone", "email"],
+    };
+    gridRef.current?.api.exportDataAsCsv(params);
+  }, []);
+
   if (loading) {
     return <div>Loading...</div>;
   }
@@ -201,13 +215,19 @@ export default function CustomerListAgGrid() {
 
   // Display data
   return (
-    <div
+    <Container
       style={{
         maxWidth: "100%",
         height: "65vh",
         margin: "auto",
+        padding: 0,
       }}>
-      <AddCustomer addCustomer={addCustomer} />
+      <Stack direction="row" spacing={1} justifyContent="center" sx={{ mb: 1 }}>
+        <AddCustomer addCustomer={addCustomer} />
+        <Button style={{ margin: 10 }} variant="outlined" onClick={onBtnExport}>
+          Download CSV export file
+        </Button>
+      </Stack>
       <AgGridReact
         ref={gridRef}
         defaultColDef={defaultColDef}
@@ -219,6 +239,6 @@ export default function CustomerListAgGrid() {
         paginationPageSizeSelector={[5, 10, 15, 20, 50, 100]}
         paginationPageSize={15}
       />
-    </div>
+    </Container>
   );
 }
