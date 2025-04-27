@@ -12,7 +12,7 @@ import TrainingsCalendar from "./TrainingsCalendar.tsx";
 const router = createHashRouter(
   [
     {
-      path: "/frontend-personaltrainer",
+      path: "/",
       element: <App />,
       errorElement: <Error />,
       children: [
