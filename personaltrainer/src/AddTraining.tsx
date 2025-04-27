@@ -18,7 +18,7 @@ export default function AddTraining({
   addTraining,
 }: AddTrainingProps) {
   const [open, setOpen] = useState(false);
-  const [selectedDate, setSelectedDate] = useState<Dayjs | null>();
+  const [selectedDate, setSelectedDate] = useState<Dayjs | null>(null);
   const [training, setTraining] = useState({
     // date: "",
     activity: "",
