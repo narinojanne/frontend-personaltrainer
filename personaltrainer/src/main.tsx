@@ -7,6 +7,7 @@ import Home from "./Home.tsx";
 import Error from "./Error.tsx";
 import TrainingListAgGrid from "./TrainingListAgGrid.tsx";
 import CustomerListAgGrid from "./CustomerListAgGrid.tsx";
+import TrainingsCalendar from "./TrainingsCalendar.tsx";
 
 const router = createBrowserRouter([
   {
@@ -25,6 +26,10 @@ const router = createBrowserRouter([
       {
         path: "traininglistaggrid",
         element: <TrainingListAgGrid />,
+      },
+      {
+        path: "trainingscalendar",
+        element: <TrainingsCalendar />,
       },
     ],
   },

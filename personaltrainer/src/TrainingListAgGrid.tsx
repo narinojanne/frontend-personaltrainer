@@ -40,6 +40,7 @@ export default function TrainingListAgGrid() {
     { field: "id", flex: 0.3 },
     {
       field: "date",
+      sort: "asc",
       cellStyle: { textAlign: "start" },
       valueFormatter: (params) => {
         return dayjs(params.value).format("DD.MM.YYYY HH:mm");

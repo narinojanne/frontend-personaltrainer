@@ -3,6 +3,7 @@ import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import { useEffect, useState } from "react";
 import { Training } from "./Types";
+import dayjs from "dayjs";
 
 // Setting base url
 const BASE_URL =
@@ -41,9 +42,14 @@ export default function TrainingsCalendar() {
     return <div>Error: {error}</div>;
   }
 
+  // Events info for calendar
   const events = trainings.map((training) => ({
     title: `${training.activity} / ${training.customer?.firstname} ${training.customer?.lastname}`,
-    date: training.date,
+    // date: training.date,
+    start: training.date,
+    end: dayjs(training.date)
+      .add(Number(training.duration), "minute")
+      .toISOString(),
   }));
 
   return (
