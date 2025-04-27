@@ -36,7 +36,7 @@ const router = createHashRouter(
     },
   ],
   {
-    basename: import.meta.env.BASE_URL,
+    basename: import.meta.env.DEV ? "/" : import.meta.env.BASE_URL,
   }
 );
 
