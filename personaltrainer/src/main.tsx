@@ -34,10 +34,10 @@ const router = createHashRouter(
         },
       ],
     },
-  ],
-  {
+  ]
+  /* {
     basename: import.meta.env.DEV ? "/" : import.meta.env.BASE_URL,
-  }
+  } */
 );
 
 createRoot(document.getElementById("root")!).render(
