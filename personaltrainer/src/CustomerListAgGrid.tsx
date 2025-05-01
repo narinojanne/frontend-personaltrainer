@@ -54,6 +54,18 @@ export default function CustomerListAgGrid() {
     {
       sortable: false,
       filter: false,
+      headerName: "Trainings",
+      cellRenderer: (params: any) => {
+        const customerId = params.data.id;
+
+        return (
+          <Link to={`/customerstrainings/${customerId}`}>View Trainings</Link>
+        );
+      },
+    },
+    {
+      sortable: false,
+      filter: false,
       headerName: "",
       cellRenderer: (params: ICellRendererParams<Customer>) => (
         <AddTraining
@@ -61,19 +73,6 @@ export default function CustomerListAgGrid() {
           addTraining={addTraining}
         />
       ),
-    },
-    {
-      sortable: false,
-      filter: false,
-      headerName: "Trainings",
-      cellRenderer: (params: any) => {
-        const trainingsUrl = params.data._links.trainings.href;
-        const customerId = params.data.id;
-
-        return (
-          <Link to={`/customerstrainings/${customerId}`}>View Trainings</Link>
-        );
-      },
     },
     {
       sortable: false,
