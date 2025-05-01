@@ -54,6 +54,7 @@ export default function CustomerListAgGrid() {
     {
       sortable: false,
       filter: false,
+      flex: 0.7,
       headerName: "",
       cellRenderer: (params: any) => {
         const customerId = params.data.id;
@@ -68,6 +69,7 @@ export default function CustomerListAgGrid() {
     {
       sortable: false,
       filter: false,
+      flex: 0.75,
       headerName: "",
       cellRenderer: (params: any) => {
         const customerId = params.data.id;
@@ -82,6 +84,7 @@ export default function CustomerListAgGrid() {
     {
       sortable: false,
       filter: false,
+      flex: 0.7,
       headerName: "",
       cellRenderer: (params: ICellRendererParams<Customer>) => (
         <AddTraining
