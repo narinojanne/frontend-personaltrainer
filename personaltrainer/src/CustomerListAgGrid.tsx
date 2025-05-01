@@ -16,6 +16,7 @@ import AddCustomer from "./AddCustomer";
 import EditCustomer from "./EditCustomer";
 import AddTraining from "./AddTraining";
 import { Container, Stack } from "@mui/material";
+import { Link } from "react-router";
 ModuleRegistry.registerModules([AllCommunityModule, CsvExportModule]);
 
 // Setting base url
@@ -60,6 +61,19 @@ export default function CustomerListAgGrid() {
           addTraining={addTraining}
         />
       ),
+    },
+    {
+      sortable: false,
+      filter: false,
+      headerName: "Trainings",
+      cellRenderer: (params: any) => {
+        const trainingsUrl = params.data._links.trainings.href;
+        const customerId = params.data.id;
+
+        return (
+          <Link to={`/customerstrainings/${customerId}`}>View Trainings</Link>
+        );
+      },
     },
     {
       sortable: false,

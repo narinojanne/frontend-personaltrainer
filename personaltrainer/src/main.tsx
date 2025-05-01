@@ -9,6 +9,7 @@ import TrainingListAgGrid from "./TrainingListAgGrid.tsx";
 import CustomerListAgGrid from "./CustomerListAgGrid.tsx";
 import TrainingsCalendar from "./TrainingsCalendar.tsx";
 import CustomerChart from "./CustomerChart.tsx";
+import CustomerTrainings from "./CustomerTrainings.tsx";
 
 const router = createHashRouter(
   [
@@ -36,6 +37,10 @@ const router = createHashRouter(
         {
           path: "customerchart",
           element: <CustomerChart />,
+        },
+        {
+          path: "customerstrainings/:id",
+          element: <CustomerTrainings />,
         },
       ],
     },
