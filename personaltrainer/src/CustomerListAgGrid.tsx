@@ -47,19 +47,35 @@ export default function CustomerListAgGrid() {
   const [columnDefs] = useState<ColDef<Customer>[]>([
     { field: "id", flex: 0.5 },
     { field: "firstname", cellStyle: { textAlign: "start" } },
-    { field: "lastname", cellStyle: { textAlign: "start" } },
+    { field: "lastname", sort: "asc", cellStyle: { textAlign: "start" } },
     { field: "city", cellStyle: { textAlign: "start" }, flex: 0.8 },
     { field: "phone", cellStyle: { textAlign: "start" }, flex: 0.8 },
     { field: "email", cellStyle: { textAlign: "start" } },
     {
       sortable: false,
       filter: false,
-      headerName: "Trainings",
+      headerName: "",
       cellRenderer: (params: any) => {
         const customerId = params.data.id;
 
         return (
-          <Link to={`/customerstrainings/${customerId}`}>View Trainings</Link>
+          <Button component={Link} to={`/customerchart/${customerId}`}>
+            Training Chart
+          </Button>
+        );
+      },
+    },
+    {
+      sortable: false,
+      filter: false,
+      headerName: "",
+      cellRenderer: (params: any) => {
+        const customerId = params.data.id;
+
+        return (
+          <Button component={Link} to={`/customerstrainings/${customerId}`}>
+            View Trainings
+          </Button>
         );
       },
     },

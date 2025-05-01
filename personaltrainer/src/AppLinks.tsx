@@ -16,9 +16,6 @@ export default function MyLinkBox() {
       <Button component={Link} to={"/trainingscalendar"}>
         Calendar
       </Button>
-      <Button component={Link} to={"/customerchart"}>
-        Customer Chart
-      </Button>
     </Stack>
   );
 }

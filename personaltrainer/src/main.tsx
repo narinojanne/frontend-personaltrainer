@@ -35,7 +35,7 @@ const router = createHashRouter(
           element: <TrainingsCalendar />,
         },
         {
-          path: "customerchart",
+          path: "customerchart/:id",
           element: <CustomerChart />,
         },
         {

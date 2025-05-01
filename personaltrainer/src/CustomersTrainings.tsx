@@ -3,12 +3,10 @@ import { useParams } from "react-router";
 import { Training } from "./Types";
 
 import { AgGridReact } from "ag-grid-react";
-import { AgGridReact as AgGridReactType } from "ag-grid-react/";
 import "ag-grid-community/styles/ag-theme-quartz.css";
-import { ColDef, ICellRendererParams } from "ag-grid-community";
+import { ColDef } from "ag-grid-community";
 import { AllCommunityModule, ModuleRegistry } from "ag-grid-community";
 import dayjs from "dayjs";
-import Button from "@mui/material/Button";
 import { Container } from "@mui/material";
 ModuleRegistry.registerModules([AllCommunityModule]);
 
@@ -36,7 +34,6 @@ export default function CustomersTrainings() {
 
   // Initializing columns
   const [columnDefs] = useState<ColDef<Training>[]>([
-    { field: "id", flex: 0.3 },
     {
       field: "date",
       sort: "asc",
@@ -55,6 +52,7 @@ export default function CustomersTrainings() {
     },
   ]);
 
+  // Fetch customers trainings
   useEffect(() => {
     fetch(`${BASE_URL}/customers/${id}/trainings`)
       .then((res) => res.json())
@@ -66,7 +64,7 @@ export default function CustomersTrainings() {
   return (
     <Container
       style={{
-        maxWidth: "100%",
+        maxWidth: "50%",
         height: "65vh",
         margin: "auto",
         padding: 0,
