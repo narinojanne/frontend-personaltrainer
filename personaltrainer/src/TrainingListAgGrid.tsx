@@ -9,6 +9,7 @@ import { AllCommunityModule, ModuleRegistry } from "ag-grid-community";
 import dayjs from "dayjs";
 import Button from "@mui/material/Button";
 import { Container } from "@mui/material";
+import { handleDeleteTraining } from "./functions/Functions";
 ModuleRegistry.registerModules([AllCommunityModule]);
 
 // Setting base url
@@ -56,11 +57,15 @@ export default function TrainingListAgGrid() {
     },
     {
       field: "customer.lastname",
-      headerName: "Customer name",
+      headerName: "Customer name and ID",
       cellStyle: { textAlign: "start" },
       valueGetter: (params: Training | any) => {
         return (
-          params.data.customer?.lastname + " " + params.data.customer?.firstname
+          params.data.customer?.lastname +
+          " " +
+          params.data.customer?.firstname +
+          " ID:" +
+          params.data.customer?.id
         );
       },
     },
@@ -73,7 +78,7 @@ export default function TrainingListAgGrid() {
         <Button
           color="secondary"
           size="small"
-          onClick={() => handleDelete(params.data.id)}>
+          onClick={() => handleDeleteTraining(params.data.id)}>
           DELETE
         </Button>
       ),
@@ -101,14 +106,14 @@ export default function TrainingListAgGrid() {
   }, []);
 
   // Confirm delete
-  const handleDelete = (id: number) => {
+  /* const handleDelete = (id: number) => {
     if (window.confirm("Are you sure you want to delete training?")) {
       deleteTraining(id);
     }
-  };
+  }; */
 
   // Function to delete training
-  const deleteTraining = async (id: number) => {
+  /* const deleteTraining = async (id: number) => {
     try {
       const response = await fetch(`${BASE_URL}/trainings/${id}`, {
         method: "DELETE",
@@ -125,7 +130,7 @@ export default function TrainingListAgGrid() {
     } catch (err) {
       console.error(err);
     }
-  };
+  }; */
 
   if (loading) {
     return <div>Loading...</div>;
@@ -144,7 +149,6 @@ export default function TrainingListAgGrid() {
         margin: "auto",
         padding: 0,
       }}>
-      {/* <AddTraining addTraining={addTraining} /> */}
       <AgGridReact
         ref={gridRef}
         defaultColDef={defaultColDef}
