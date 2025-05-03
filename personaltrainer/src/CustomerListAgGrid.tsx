@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState, useRef, useCallback } from "react";
-import { Customer, NewTraining } from "./Types";
+import { Customer } from "./Types";
 import {
   addCustomer,
   addTraining,
