@@ -1,5 +1,11 @@
 import { useEffect, useMemo, useState, useRef, useCallback } from "react";
-import { Customer, NewCustomer, NewTraining } from "./Types";
+import { Customer, NewTraining } from "./Types";
+import {
+  addCustomer,
+  addTraining,
+  editCustomer,
+  handleDelete,
+} from "./functions/Functions";
 
 import { AgGridReact } from "ag-grid-react";
 import { AgGridReact as AgGridReactType } from "ag-grid-react/";
@@ -46,8 +52,19 @@ export default function CustomerListAgGrid() {
   // Initializing columns
   const [columnDefs] = useState<ColDef<Customer>[]>([
     { field: "id", flex: 0.5 },
-    { field: "firstname", cellStyle: { textAlign: "start" } },
-    { field: "lastname", sort: "asc", cellStyle: { textAlign: "start" } },
+    { field: "firstname", cellStyle: { textAlign: "start" }, flex: 0.8 },
+    {
+      field: "lastname",
+      sort: "asc",
+      cellStyle: { textAlign: "start" },
+      flex: 0.8,
+    },
+    {
+      field: "streetaddress",
+      cellStyle: { textAlign: "start" },
+      flex: 0.8,
+      hide: true,
+    },
     { field: "city", cellStyle: { textAlign: "start" }, flex: 0.8 },
     { field: "phone", cellStyle: { textAlign: "start" }, flex: 0.8 },
     { field: "email", cellStyle: { textAlign: "start" } },
@@ -118,8 +135,8 @@ export default function CustomerListAgGrid() {
           size="small"
           onClick={() =>
             handleDelete(
-              params.data._links.self.href,
-              params.data.id.toString()
+              params.data._links.self.href
+              //params.data.id.toString()
             )
           }>
           DELETE
@@ -158,14 +175,14 @@ export default function CustomerListAgGrid() {
   }, []);
 
   // Confirm delete
-  const handleDelete = (url: string, id: string) => {
+  /* const handleDelete = (url: string, id: string) => {
     if (window.confirm("Are you sure you want to delete customer?")) {
       deleteCustomer(url, id);
     }
-  };
+  }; */
 
   // Function to delete customer
-  const deleteCustomer = async (url: string, id: string) => {
+  /* const deleteCustomer = async (url: string, id: string) => {
     try {
       const response = await fetch(url, {
         method: "DELETE",
@@ -182,10 +199,10 @@ export default function CustomerListAgGrid() {
     } catch (err) {
       console.error(err);
     }
-  };
+  }; */
 
   // Function to add new customer
-  const addCustomer = (customer: NewCustomer) => {
+  /* const addCustomer = (customer: NewCustomer) => {
     const options = {
       method: "POST",
       headers: {
@@ -197,10 +214,10 @@ export default function CustomerListAgGrid() {
     fetch(`${BASE_URL}/customers`, options)
       .then(() => fetchCustomers())
       .catch((err) => console.error(err));
-  };
+  }; */
 
   // Function to update customer
-  const editCustomer = (customer: Customer, url: string) => {
+  /* const editCustomer = (customer: Customer, url: string) => {
     const options = {
       method: "PUT",
       headers: {
@@ -212,10 +229,10 @@ export default function CustomerListAgGrid() {
     fetch(url, options)
       .then(() => fetchCustomers())
       .catch((err) => console.error(err));
-  };
+  }; */
 
   // Function to add new training
-  const addTraining = (training: NewTraining) => {
+  /* const addTraining = (training: NewTraining) => {
     const options = {
       method: "POST",
       headers: {
@@ -227,12 +244,20 @@ export default function CustomerListAgGrid() {
     fetch(`${BASE_URL}/trainings`, options)
       .then(() => fetchCustomers())
       .catch((err) => console.error(err));
-  };
+  }; */
 
   // Function to export customer data to CSV
   const onBtnExport = useCallback(() => {
     const params = {
-      columnKeys: ["id", "firstname", "lastname", "city", "phone", "email"],
+      columnKeys: [
+        "id",
+        "firstname",
+        "lastname",
+        "streetaddress",
+        "city",
+        "phone",
+        "email",
+      ],
     };
     gridRef.current?.api.exportDataAsCsv(params);
   }, []);
