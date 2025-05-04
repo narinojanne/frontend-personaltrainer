@@ -56,4 +56,5 @@ export type AddTrainingCustomerProps = {
 export type EditCustomerProps = {
   currentCustomer: Customer;
   editCustomer: (customer: Customer, url: string) => void;
+  onCustomerEdited: () => void;
 };

@@ -9,7 +9,7 @@ import { AllCommunityModule, ModuleRegistry } from "ag-grid-community";
 import dayjs from "dayjs";
 import Button from "@mui/material/Button";
 import { Container } from "@mui/material";
-import { handleDeleteTraining } from "./functions/Functions";
+import { deleteTraining } from "./functions/Functions";
 ModuleRegistry.registerModules([AllCommunityModule]);
 
 // Setting base url
@@ -106,31 +106,16 @@ export default function TrainingListAgGrid() {
   }, []);
 
   // Confirm delete
-  /* const handleDelete = (id: number) => {
+  const handleDeleteTraining = async (id: number) => {
     if (window.confirm("Are you sure you want to delete training?")) {
-      deleteTraining(id);
-    }
-  }; */
-
-  // Function to delete training
-  /* const deleteTraining = async (id: number) => {
-    try {
-      const response = await fetch(`${BASE_URL}/trainings/${id}`, {
-        method: "DELETE",
-      });
-
-      if (!response.ok) throw new Error("Delete failed");
-
-      const api = gridRef.current?.api;
-      const rowNodeToRemove = api?.getRowNode(id.toString());
-
-      if (api && rowNodeToRemove && rowNodeToRemove.data) {
-        api.applyTransaction({ remove: [rowNodeToRemove.data] });
+      try {
+        await deleteTraining(id);
+        await fetchTrainings();
+      } catch (err) {
+        console.log("Failed to delete training", err);
       }
-    } catch (err) {
-      console.error(err);
     }
-  }; */
+  };
 
   if (loading) {
     return <div>Loading...</div>;

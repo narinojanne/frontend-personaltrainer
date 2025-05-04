@@ -18,20 +18,11 @@ export const addCustomer = async (customer: NewCustomer) => {
   return await response.json();
 };
 
-// Confirm delete
-export const handleDelete = (url: string) => {
-  if (window.confirm("Are you sure you want to delete customer?")) {
-    deleteCustomer(url);
-  }
-};
-
 // Function to delete customer
 export const deleteCustomer = async (url: string) => {
-  const response = await fetch(url, {
+  await fetch(url, {
     method: "DELETE",
   });
-
-  if (!response.ok) throw new Error("Failed to delete customer");
 };
 
 // Function to edit customer
@@ -62,18 +53,9 @@ export const addTraining = async (training: NewTraining) => {
   return await response.json();
 };
 
-// Confirm delete
-export const handleDeleteTraining = (id: number) => {
-  if (window.confirm("Are you sure you want to delete training?")) {
-    deleteTraining(id);
-  }
-};
-
-// Function to delete customer
+// Function to delete training
 export const deleteTraining = async (id: number) => {
-  const response = await fetch(`${BASE_URL}/trainings/${id}`, {
+  await fetch(`${BASE_URL}/trainings/${id}`, {
     method: "DELETE",
   });
-
-  if (!response.ok) throw new Error("Failed to delete training");
 };

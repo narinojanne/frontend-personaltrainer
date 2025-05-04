@@ -1,10 +1,10 @@
 import { useEffect, useMemo, useState, useRef, useCallback } from "react";
-import { Customer } from "./Types";
+import { Customer, NewCustomer } from "./Types";
 import {
   addCustomer,
   addTraining,
+  deleteCustomer,
   editCustomer,
-  handleDelete,
 } from "./functions/Functions";
 
 import { AgGridReact } from "ag-grid-react";
@@ -120,6 +120,7 @@ export default function CustomerListAgGrid() {
         <EditCustomer
           currentCustomer={params.data as Customer}
           editCustomer={editCustomer}
+          onCustomerEdited={fetchCustomers}
         />
       ),
     },
@@ -175,76 +176,25 @@ export default function CustomerListAgGrid() {
   }, []);
 
   // Confirm delete
-  /* const handleDelete = (url: string, id: string) => {
+  const handleDelete = async (url: string) => {
     if (window.confirm("Are you sure you want to delete customer?")) {
-      deleteCustomer(url, id);
-    }
-  }; */
-
-  // Function to delete customer
-  /* const deleteCustomer = async (url: string, id: string) => {
-    try {
-      const response = await fetch(url, {
-        method: "DELETE",
-      });
-
-      if (!response.ok) throw new Error("Delete failed");
-
-      const api = gridRef.current?.api;
-      const rowNodeToRemove = api?.getRowNode(id.toString());
-
-      if (api && rowNodeToRemove && rowNodeToRemove.data) {
-        api.applyTransaction({ remove: [rowNodeToRemove.data] });
+      try {
+        await deleteCustomer(url);
+        await fetchCustomers();
+      } catch (err) {
+        console.error("Failed to delete customer", err);
       }
-    } catch (err) {
-      console.error(err);
     }
-  }; */
+  };
 
-  // Function to add new customer
-  /* const addCustomer = (customer: NewCustomer) => {
-    const options = {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(customer),
-    };
-
-    fetch(`${BASE_URL}/customers`, options)
-      .then(() => fetchCustomers())
-      .catch((err) => console.error(err));
-  }; */
-
-  // Function to update customer
-  /* const editCustomer = (customer: Customer, url: string) => {
-    const options = {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(customer),
-    };
-
-    fetch(url, options)
-      .then(() => fetchCustomers())
-      .catch((err) => console.error(err));
-  }; */
-
-  // Function to add new training
-  /* const addTraining = (training: NewTraining) => {
-    const options = {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(training),
-    };
-
-    fetch(`${BASE_URL}/trainings`, options)
-      .then(() => fetchCustomers())
-      .catch((err) => console.error(err));
-  }; */
+  const handleAddCustomer = async (customer: NewCustomer) => {
+    try {
+      await addCustomer(customer);
+      fetchCustomers();
+    } catch (err) {
+      console.error("Create customer failed", err);
+    }
+  };
 
   // Function to export customer data to CSV
   const onBtnExport = useCallback(() => {
@@ -280,7 +230,7 @@ export default function CustomerListAgGrid() {
         padding: 0,
       }}>
       <Stack direction="row" spacing={1} justifyContent="center" sx={{ mb: 1 }}>
-        <AddCustomer addCustomer={addCustomer} />
+        <AddCustomer addCustomer={handleAddCustomer} />
         <Button style={{ margin: 10 }} variant="outlined" onClick={onBtnExport}>
           Download CSV export file
         </Button>

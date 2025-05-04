@@ -11,6 +11,7 @@ import DialogTitle from "@mui/material/DialogTitle";
 export default function AddCustomer({
   currentCustomer,
   editCustomer,
+  onCustomerEdited,
 }: EditCustomerProps) {
   const [open, setOpen] = useState(false);
   const [customer, setCustomer] = useState({
@@ -37,117 +38,118 @@ export default function AddCustomer({
     setCustomer({ ...customer, [event.target.name]: event.target.value });
   };
 
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    try {
+      await editCustomer(customer, customer._links.self.href);
+      onCustomerEdited(); // Update customerlistaggrid
+      handleClose();
+    } catch (err) {
+      console.error("Customer edit failed", err);
+    }
+  };
+
   // Customer data form
   return (
     <div>
       <Button size="small" onClick={handleClickOpen}>
         Edit
       </Button>
-      <Dialog
-        open={open}
-        onClose={handleClose}
-        slotProps={{
-          paper: {
-            component: "form",
-            onSubmit: (event: React.FormEvent<HTMLFormElement>) => {
-              event.preventDefault();
-              editCustomer(customer, currentCustomer._links.self.href);
-              handleClose();
-            },
-          },
-        }}>
-        <DialogTitle>Edit Customer</DialogTitle>
-        <DialogContent>
-          <TextField
-            autoFocus
-            required
-            margin="dense"
-            id="firstname"
-            name="firstname"
-            type="text"
-            value={customer.firstname}
-            onChange={handleInputChange}
-            label="First name"
-            fullWidth
-            variant="standard"
-          />
-          <TextField
-            required
-            margin="dense"
-            id="lastname"
-            name="lastname"
-            type="text"
-            value={customer.lastname}
-            onChange={handleInputChange}
-            label="Last name"
-            fullWidth
-            variant="standard"
-          />
-          <TextField
-            required
-            margin="dense"
-            id="email"
-            name="email"
-            type="email"
-            value={customer.email}
-            onChange={handleInputChange}
-            label="Email"
-            fullWidth
-            variant="standard"
-          />
-          <TextField
-            required
-            margin="dense"
-            id="phone"
-            name="phone"
-            type="text"
-            value={customer.phone}
-            onChange={handleInputChange}
-            label="Phone"
-            fullWidth
-            variant="standard"
-          />
-          <TextField
-            required
-            margin="dense"
-            id="streetaddress"
-            name="streetaddress"
-            type="text"
-            value={customer.streetaddress}
-            onChange={handleInputChange}
-            label="Street address"
-            fullWidth
-            variant="standard"
-          />
-          <TextField
-            required
-            margin="dense"
-            id="postcode"
-            name="postcode"
-            type="text"
-            value={customer.postcode}
-            onChange={handleInputChange}
-            label="Postcode"
-            fullWidth
-            variant="standard"
-          />
-          <TextField
-            required
-            margin="dense"
-            id="city"
-            name="city"
-            type="text"
-            value={customer.city}
-            onChange={handleInputChange}
-            label="City"
-            fullWidth
-            variant="standard"
-          />
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose}>Cancel</Button>
-          <Button type="submit">Update</Button>
-        </DialogActions>
+      <Dialog open={open} onClose={handleClose}>
+        <form onSubmit={handleSubmit}>
+          <DialogTitle>Edit Customer</DialogTitle>
+          <DialogContent>
+            <TextField
+              autoFocus
+              required
+              margin="dense"
+              id="firstname"
+              name="firstname"
+              type="text"
+              value={customer.firstname}
+              onChange={handleInputChange}
+              label="First name"
+              fullWidth
+              variant="standard"
+            />
+            <TextField
+              required
+              margin="dense"
+              id="lastname"
+              name="lastname"
+              type="text"
+              value={customer.lastname}
+              onChange={handleInputChange}
+              label="Last name"
+              fullWidth
+              variant="standard"
+            />
+            <TextField
+              required
+              margin="dense"
+              id="email"
+              name="email"
+              type="email"
+              value={customer.email}
+              onChange={handleInputChange}
+              label="Email"
+              fullWidth
+              variant="standard"
+            />
+            <TextField
+              required
+              margin="dense"
+              id="phone"
+              name="phone"
+              type="text"
+              value={customer.phone}
+              onChange={handleInputChange}
+              label="Phone"
+              fullWidth
+              variant="standard"
+            />
+            <TextField
+              required
+              margin="dense"
+              id="streetaddress"
+              name="streetaddress"
+              type="text"
+              value={customer.streetaddress}
+              onChange={handleInputChange}
+              label="Street address"
+              fullWidth
+              variant="standard"
+            />
+            <TextField
+              required
+              margin="dense"
+              id="postcode"
+              name="postcode"
+              type="text"
+              value={customer.postcode}
+              onChange={handleInputChange}
+              label="Postcode"
+              fullWidth
+              variant="standard"
+            />
+            <TextField
+              required
+              margin="dense"
+              id="city"
+              name="city"
+              type="text"
+              value={customer.city}
+              onChange={handleInputChange}
+              label="City"
+              fullWidth
+              variant="standard"
+            />
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleClose}>Cancel</Button>
+            <Button type="submit">Update</Button>
+          </DialogActions>
+        </form>
       </Dialog>
     </div>
   );
