@@ -2,13 +2,14 @@ import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import { useEffect, useState } from "react";
-import { Training } from "./Types";
+import { Training } from "../types/Types";
 import dayjs from "dayjs";
 
 // Setting base url
 const BASE_URL =
   "https://customer-rest-service-frontend-personaltrainer.2.rahtiapp.fi/api";
 
+// Function to create and show training calendar
 export default function TrainingsCalendar() {
   const [trainings, setTrainings] = useState<Training[]>([]);
   const [loading, setLoading] = useState(true);
@@ -52,6 +53,7 @@ export default function TrainingsCalendar() {
       .toISOString(),
   }));
 
+  // Display calendar
   return (
     <div style={{ margin: 20 }}>
       <FullCalendar

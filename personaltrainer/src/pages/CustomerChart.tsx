@@ -11,16 +11,18 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-import { Training } from "./Types";
+import { Training } from "../types/Types";
 
 // Setting base url
 const BASE_URL =
   "https://customer-rest-service-frontend-personaltrainer.2.rahtiapp.fi/api";
 
+// Function to create and show customers trainings chart
 export default function CustomerChart() {
   const [trainings, setTrainings] = useState<Training[]>([]);
   const { id } = useParams();
 
+  // Get customers training data
   useEffect(() => {
     const fetchTrainings = async () => {
       try {
@@ -36,12 +38,14 @@ export default function CustomerChart() {
     fetchTrainings();
   }, [id]);
 
+  // Loop and collect trainings data
   const activityDurations = trainings.reduce((acc, training) => {
     const { activity, duration } = training;
     acc[activity] = (acc[activity] || 0) + duration;
     return acc;
   }, {} as Record<string, number>);
 
+  // Create chart data
   const chartData = Object.entries(activityDurations).map(
     ([activity, duration]) => ({
       name: activity,
@@ -49,6 +53,7 @@ export default function CustomerChart() {
     })
   );
 
+  // Display chart
   return (
     <Container
       style={{

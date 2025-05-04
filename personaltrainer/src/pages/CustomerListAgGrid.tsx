@@ -1,11 +1,11 @@
 import { useEffect, useMemo, useState, useRef, useCallback } from "react";
-import { Customer, NewCustomer } from "./Types";
+import { Customer, NewCustomer } from "../types/Types";
 import {
   addCustomer,
   addTraining,
   deleteCustomer,
   editCustomer,
-} from "./functions/Functions";
+} from "../functions/Functions";
 
 import { AgGridReact } from "ag-grid-react";
 import { AgGridReact as AgGridReactType } from "ag-grid-react/";
@@ -18,9 +18,9 @@ import {
   CsvExportModule,
 } from "ag-grid-community";
 import Button from "@mui/material/Button";
-import AddCustomer from "./AddCustomer";
-import EditCustomer from "./EditCustomer";
-import AddTraining from "./AddTraining";
+import AddCustomer from "../components/AddCustomer";
+import EditCustomer from "../components/EditCustomer";
+import AddTraining from "../components/AddTraining";
 import { Container, Stack } from "@mui/material";
 import { Link } from "react-router";
 ModuleRegistry.registerModules([AllCommunityModule, CsvExportModule]);
@@ -90,7 +90,6 @@ export default function CustomerListAgGrid() {
       headerName: "",
       cellRenderer: (params: any) => {
         const customerId = params.data.id;
-
         return (
           <Button component={Link} to={`/customerstrainings/${customerId}`}>
             View Trainings
@@ -187,10 +186,11 @@ export default function CustomerListAgGrid() {
     }
   };
 
+  // Create new customer when form submit and reload data
   const handleAddCustomer = async (customer: NewCustomer) => {
     try {
       await addCustomer(customer);
-      fetchCustomers();
+      fetchCustomers(); // reload customerlistaggrid
     } catch (err) {
       console.error("Create customer failed", err);
     }

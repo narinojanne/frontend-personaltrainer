@@ -1,5 +1,5 @@
 import { ChangeEvent, useState } from "react";
-import { AddCustomerProps } from "./Types";
+import { AddCustomerProps } from "../types/Types";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Dialog from "@mui/material/Dialog";
@@ -7,7 +7,7 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 
-// Function to add new customer
+// Function to show add new customer form
 export default function AddCustomer({ addCustomer }: AddCustomerProps) {
   const [open, setOpen] = useState(false);
   const [customer, setCustomer] = useState({

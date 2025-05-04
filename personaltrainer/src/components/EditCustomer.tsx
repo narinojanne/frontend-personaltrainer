@@ -1,5 +1,5 @@
 import { ChangeEvent, useState } from "react";
-import { EditCustomerProps } from "./Types";
+import { EditCustomerProps } from "../types/Types";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Dialog from "@mui/material/Dialog";
@@ -7,8 +7,8 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 
-// Function to add new customer
-export default function AddCustomer({
+// Function to show edit customer form
+export default function EditCustomer({
   currentCustomer,
   editCustomer,
   onCustomerEdited,
@@ -38,11 +38,12 @@ export default function AddCustomer({
     setCustomer({ ...customer, [event.target.name]: event.target.value });
   };
 
+  // Edit current customer when form submit
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     try {
       await editCustomer(customer, customer._links.self.href);
-      onCustomerEdited(); // Update customerlistaggrid
+      onCustomerEdited(); // reload customerlistaggrid
       handleClose();
     } catch (err) {
       console.error("Customer edit failed", err);

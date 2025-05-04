@@ -1,4 +1,4 @@
-import { Customer, NewCustomer, NewTraining } from "../Types";
+import { Customer, NewCustomer, NewTraining } from "../types/Types";
 
 // Setting base url
 const BASE_URL =

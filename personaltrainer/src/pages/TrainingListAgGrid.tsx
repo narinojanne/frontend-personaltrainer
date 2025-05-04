@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState, useRef } from "react";
-import { Training } from "./Types";
+import { Training } from "../types/Types";
 
 import { AgGridReact } from "ag-grid-react";
 import { AgGridReact as AgGridReactType } from "ag-grid-react/";
@@ -9,14 +9,14 @@ import { AllCommunityModule, ModuleRegistry } from "ag-grid-community";
 import dayjs from "dayjs";
 import Button from "@mui/material/Button";
 import { Container } from "@mui/material";
-import { deleteTraining } from "./functions/Functions";
+import { deleteTraining } from "../functions/Functions";
 ModuleRegistry.registerModules([AllCommunityModule]);
 
 // Setting base url
 const BASE_URL =
   "https://customer-rest-service-frontend-personaltrainer.2.rahtiapp.fi/api";
 
-// Function to get and display trinings data
+// Function to get and display trainings data
 export default function TrainingListAgGrid() {
   const [trainings, setTrainings] = useState<Training[]>([]);
   const [loading, setLoading] = useState(true);
